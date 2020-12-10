@@ -114,12 +114,10 @@ if __name__ == "__main__":
         
         reads_list = [read for read in fastq_records]
         converted_list = convert(reads_list, L1, L2, Q1, Q2, P)
-        #print('prova')
         # Writing the converted records in fasta's format
         for read in converted_list:
             print(read.format('fasta'))
         file_name = re.findall('(\w*).fq', fastq_file_name)[0]
-        #print(file_name + '.fa')
         SeqIO.write(converted_list, file_name + '.fa', 'fasta')
     except:
         print('Error during the execution of the converter, restart the file.')
