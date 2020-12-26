@@ -11,30 +11,27 @@ def get_min_quality(read):
     return min(read.letter_annotations['phred_quality'])
 
 # Returns the longest subregion
-# with minimum_quality = quality_threshold
+# with minimum_quality >= quality_threshold
 def get_quality_subregion(read, quality_threshold):
     quality_list = read.letter_annotations['phred_quality']
     available_list = [quality >= quality_threshold for quality in quality_list]
-    threshold_list = [quality == quality_threshold for quality in quality_list]
     start, end = 0, -1
     curr_start, curr_end = -1, -1
-    found_threshold, interval_found = False, False
+    interval_found = False
     for i in range(len(available_list)):
         if available_list[i]:
             if not(interval_found):
                 curr_start = i
                 interval_found = True
-            if threshold_list[i]:
-                found_threshold = True
             curr_end = i
         elif curr_start != -1:
-            # Checks if the new interval that has been found has minimum_quality
-            # equal to Q2 and if it is the longest subregion in the range [0,i]
-            if found_threshold and end - start < curr_end - curr_start:
+            # Checks if the new interval that has been found is the
+            # longest subregion in the range [0,i]
+            if end - start < curr_end - curr_start:
                 start, end = curr_start, curr_end
-            found_threshold, interval_found = False, False
+            interval_found = False
             curr_start, curr_end = -1, -1
-    if found_threshold and end - start >= curr_end - curr_start:
+    if curr_start != -1 and end - start >= curr_end - curr_start:
         start, end = curr_start, curr_end
     return (start, end)
 
@@ -45,19 +42,19 @@ def get_medium_quality(read, interval):
     quality_list = read.letter_annotations['phred_quality'][interval[0]:interval[1]+1]
     return sum(quality_list) / len(quality_list)
 
-# Returns the percentual length of the longest subregion
-# with minimum_quality = quality_threshold
+# Returns the percentual length (100% -> 1.0) of the longest subregion
+# with minimum_quality >= quality_threshold
 def get_quality_percentage(read, quality_threshold):
     interval = get_quality_subregion(read, quality_threshold)
-    return (interval[1] - interval[0] + 1) / len(read.seq) * 100
+    return (interval[1] - interval[0] + 1) / len(read.seq)
 
 # Adds in the read's description the following attributes
 # seq_length = length of the read's sequence
 # min_quality = minimum read's quality value 
-# start_subregion = start of the read's longest subregion with min_quality = Q2
-# end_subregion = end of the read's longest subregion with min_quality = Q2
+# start_subregion = start of the read's longest subregion with min_quality >= Q2
+# end_subregion = end of the read's longest subregion with min_quality >= Q2
 # avg_quality_subregion = average of read's quality value in its longest 
-#                         subregion with min_quality = Q2
+#                         subregion with min_quality >= Q2
 def convert_read(read, Q2):
     min_quality = get_min_quality(read)
     interval = get_quality_subregion(read, Q2)
@@ -77,7 +74,7 @@ def convert(reads_list, L1, L2, Q1, Q2, P):
     # Read's minimum quality value must be greater than Q1
     reads_list = [read for read in reads_list if get_min_quality(read) > Q1]
     
-    # The percentual length of the longest subregion with minimum_quality = Q2
+    # The percentual length of the longest subregion with minimum_quality >= Q2
     # of each read must be >= P%
     reads_list = [read for read in reads_list if get_quality_percentage(read, Q2) >= P]
     
@@ -106,13 +103,13 @@ if __name__ == "__main__":
         while (Q2 <= Q1):
             print("Q2 is not greater than Q1, insert again Q2: ")
             Q2 = int(input())
-        print("Insert the value of P: ")
-        P = int(input())
+        print("Insert the value of P (100% -> 1.0, 50% -> 0.5): ")
+        P = float(input())
 
         # Reading the .fq file        
         fastq_records = SeqIO.parse(fastq_file_name, 'fastq')
-        
         reads_list = [read for read in fastq_records]
+        # Converting the reads
         converted_list = convert(reads_list, L1, L2, Q1, Q2, P)
         # Writing the converted records in fasta's format
         for read in converted_list:
