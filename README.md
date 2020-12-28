@@ -6,7 +6,7 @@ Input:
 - **L1**: Minimum length of the sequence in each read
 - **L2**: Maximum length of the sequence in each read (> *L1*)
 - **Q1**: Lower bound of the minimum quality in each read
-- **Q2**: Lower bound for the subregion with minimum quality >= *Q2* (> *Q1*)
+- **Q2**: Lower bound of the minimum quality of the subregion considered (> *Q1*)
 - **P**: Lower bound for the percentage of the length of the subregion / length of the entire sequence (*P* goes from 0.0 to 1.0, so 10% -> 0.1, 5% -> 0.05...)
 
 Output:
