@@ -1,5 +1,5 @@
 # From-FASTQ-To-FASTA
-Converter from reads .fq to .fa
+Converter from .fq to .fa
 
 Input:
 - **fastq_file_name**: the path to the .fq file containing the reads to convert
