@@ -11,7 +11,7 @@ def get_min_quality(read):
     return min(read.letter_annotations['phred_quality'])
 
 # Returns the longest subregion
-# with minimum_quality >= quality_threshold
+# with min_quality >= quality_threshold
 def get_quality_subregion(read, quality_threshold):
     quality_list = read.letter_annotations['phred_quality']
     available_list = [quality >= quality_threshold for quality in quality_list]
@@ -43,7 +43,7 @@ def get_medium_quality(read, interval):
     return sum(quality_list) / len(quality_list)
 
 # Returns the percentual length (100% -> 1.0) of the longest subregion
-# with minimum_quality >= quality_threshold
+# with min_quality >= quality_threshold
 def get_quality_percentage(read, quality_threshold):
     interval = get_quality_subregion(read, quality_threshold)
     return (interval[1] - interval[0] + 1) / len(read.seq)
@@ -74,7 +74,7 @@ def convert(reads_list, L1, L2, Q1, Q2, P):
     # Read's minimum quality value must be greater than Q1
     reads_list = [read for read in reads_list if get_min_quality(read) > Q1]
     
-    # The percentual length of the longest subregion with minimum_quality >= Q2
+    # The percentual length of the longest subregion with min_quality >= Q2
     # of each read must be >= P%
     reads_list = [read for read in reads_list if get_quality_percentage(read, Q2) >= P]
     
