@@ -31,7 +31,7 @@ def get_quality_subregion(read, quality_threshold):
                 start, end = curr_start, curr_end
             interval_found = False
             curr_start, curr_end = -1, -1
-    if curr_start != -1 and end - start >= curr_end - curr_start:
+    if curr_start != -1 and end - start < curr_end - curr_start:
         start, end = curr_start, curr_end
     return (start, end)
 
@@ -114,7 +114,7 @@ if __name__ == "__main__":
         # Writing the converted records in fasta's format
         for read in converted_list:
             print(read.format('fasta'))
-        file_name = re.findall('(\w*).fq', fastq_file_name)[0]
+        file_name = re.findall('(.*).fq', fastq_file_name)[0]
         SeqIO.write(converted_list, file_name + '.fa', 'fasta')
     except:
         print('Error during the execution of the converter, restart the file.')
