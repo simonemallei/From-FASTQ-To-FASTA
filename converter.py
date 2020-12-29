@@ -87,7 +87,7 @@ def convert(reads_list, L1, L2, Q1, Q2, P):
 if __name__ == "__main__":
     try:
         # Input from stdin
-        print("Insert the name of the file .fq you want to convert to .fasta: ")
+        print("Insert the name of the file .fq you want to convert to .fa: ")
         fastq_file_name = input()
         print("Insert the value of L1: ")
         L1 = int(input())
