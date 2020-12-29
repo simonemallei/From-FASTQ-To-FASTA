@@ -27,6 +27,7 @@ For each read, the FASTA's header will have the following information:
 - Average quality of the longest subregion with minimum quality >= *Q2*
 
 Samples:
+
 In 'samples/' there are some examples of possible .fq files converted in .fa files (the inputs are very similar), here the following values used to obtain the outputs:
 
 | Sample File | L1 | L2 | Q1 | Q2 | P |
