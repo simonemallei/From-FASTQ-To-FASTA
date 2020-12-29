@@ -34,5 +34,5 @@ In 'samples/' there are some examples of possible .fq files converted in .fa fil
 |-------------|----|----|----|----|---|
 | sample0.fq | 10 | 50 | 40 | 60 | 0.3 (30%) |
 | sample1.fq | 30 | 40 | 50 | 64 | 0.1 (10%) |
-| sample2.fq | 36 | 36 | 55 | 59 | 0.6 (60%) |
+| sample2.fq | 35 | 36 | 55 | 59 | 0.06 (6%) |
 | sample3.fq | 10 | 100 | 39 | 40 | 1.0 (100%) |
